@@ -31,3 +31,7 @@ import {EasyServer,Router} from 'EasyServer'
 let server = new EasyServer();
 server.start();
 ```
+
+## Licence
+
+MIT
