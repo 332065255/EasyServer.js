@@ -22,3 +22,12 @@
 ### 项目rootPath为__dirname+"/../../" 即为项目根目录，因为node_modules/EasyServer
 ### 项目默认端口port 为9889;
 ### 以上配置皆可在/config/default.js文件中重写，定义为自己的，注意，rootPath必须是可以访问到routes目录，因为这样才能自动去检索代码并注册路由
+
+## 安装方式
+···
+npm i -S EasyServer
+
+import {EasyServer,Router} from 'EasyServer'
+let server = new EasyServer();
+server.start();
+···
