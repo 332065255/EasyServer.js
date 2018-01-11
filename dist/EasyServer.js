@@ -62,15 +62,11 @@ class EasyServer {
         if (process.env.NODE_ENV === 'dev') {
             _chokidar2.default.watch(_default2.default.rootPath + 'routes/').on('change', path => {
                 this.cleanCache(path);
-
-                this.d_Console(path);
+                this.d_Console(path, "reCompile");
                 var _class = require(path).default;
                 var rout = new _class();
                 rout.compilePhyPath(path);
                 this.d_router[rout.nickName] = rout;
-
-                this.app.get(rout.path, rout.default.bind(rout));
-                this.app.post(rout.path, rout.default.bind(rout));
             });
         }
 
@@ -114,6 +110,11 @@ class EasyServer {
             this.app.post("/*", this.rootPath.bind(this));
         });
     }
+    /**
+     * 所有路由主入口
+     * @param {*} req 
+     * @param {*} res 
+     */
     rootPath(req, res) {
         this.shoot = false;
 
