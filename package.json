@@ -5,9 +5,11 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"./node_modules/.bin/babel lib --out-dir dist"
+    "build": "./node_modules/.bin/babel lib --out-dir dist"
   },
-  "pre-commit":["build"],
+  "pre-commit": [
+    "build"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/332065255/EasyServer.js.git"
@@ -33,7 +35,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "config": "^1.29.1",
     "debug": "^3.1.0",
-    "express": "^4.16.2",
-    "webpack": "^3.10.0"
+    "express": "^4.16.2"
   }
 }

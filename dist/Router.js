@@ -73,6 +73,7 @@ class Router {
                 index = i + 1;
             }
         }
+        this.allPath = path;
         this.path = "/" + arr.slice(index).join('/');
         this.path = this.path.replace('.js', '/*');
         this.nickName = arr.slice(index).join('_');

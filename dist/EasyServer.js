@@ -28,6 +28,12 @@ var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
 
+var _chokidar = require('chokidar');
+
+var _chokidar2 = _interopRequireDefault(_chokidar);
+
+var _timers = require('timers');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var http = require('http');
@@ -38,7 +44,9 @@ class EasyServer {
         this.r_Console = (0, _debug2.default)('router');
         this.d_Console = (0, _debug2.default)('debug');
         this.e_Console = (0, _debug2.default)('EasyServer');
+        this.f_Console = (0, _debug2.default)('fileChange');
         this.d_router = {};
+        this.shoot = false;
         Object.assign(_default2.default, _config2.default);
     }
     async start() {
@@ -51,6 +59,20 @@ class EasyServer {
             this.e_Console('EasyServer Error: ' + e);
         }
         this.e_Console('=======================================');
+        if (process.env.NODE_ENV === 'dev') {
+            _chokidar2.default.watch(_default2.default.rootPath + 'routes/').on('change', path => {
+                this.cleanCache(path);
+
+                this.d_Console(path);
+                var _class = require(path).default;
+                var rout = new _class();
+                rout.compilePhyPath(path);
+                this.d_router[rout.nickName] = rout;
+
+                this.app.get(rout.path, rout.default.bind(rout));
+                this.app.post(rout.path, rout.default.bind(rout));
+            });
+        }
 
         try {
             let jsDone = await this.compileJs();
@@ -88,7 +110,24 @@ class EasyServer {
             });
 
             this.server.listen(_default2.default.port);
+            this.app.get("/*", this.rootPath.bind(this));
+            this.app.post("/*", this.rootPath.bind(this));
         });
+    }
+    rootPath(req, res) {
+        this.shoot = false;
+
+        var path = req.path.substr(0, req.path.lastIndexOf('/') + 1) + "*";
+        for (let rot in this.d_router) {
+
+            if (this.d_router[rot].path === path) {
+                this.shoot = true;
+                this.d_router[rot].default(req, res);
+            }
+        }
+        if (!this.shoot) {
+            res.send("<h1>404</h1>");
+        }
     }
     async compileJs() {
         return new Promise((res, rej) => {
@@ -96,7 +135,12 @@ class EasyServer {
             // console.log(filePath);
             this.fileDisplay(filePath);
             // console.log(this.d_router);
+            res();
         });
+    }
+    cleanCache(modulePath) {
+        // require.cache[modulePath] = null;
+        delete require.cache[modulePath];
     }
     fileDisplay(filePath) {
 
@@ -122,8 +166,6 @@ class EasyServer {
                                 rout.compilePhyPath(filedir);
                                 // console.log(rout,rout.nickName,rout.path);
                                 this.d_router[rout.nickName] = rout;
-                                this.app.get(rout.path, rout.default.bind(rout));
-                                this.app.post(rout.path, rout.default.bind(rout));
                             }
                             if (isDir) {
                                 this.fileDisplay(filedir); //递归，如果是文件夹，就继续遍历该文件夹下面的文件  
