@@ -25,7 +25,7 @@
 
 ## 安装方式（还未发npm）
 ```
-npm i -S EasyServer
+npm install easyserver.js -S
 
 import {EasyServer,Router} from 'EasyServer'
 let server = new EasyServer();
