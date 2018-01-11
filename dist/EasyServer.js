@@ -22,16 +22,17 @@ var _default2 = _interopRequireDefault(_default);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-class EasyServer extends _express2.default {
+class EasyServer {
     constructor() {
-        super();
-        this.app = this;
+        // super();
+        this.app = (0, _express2.default)();
         this.r_Console = (0, _debug2.default)('router');
         this.d_Console = (0, _debug2.default)('debug');
         this.e_Console = (0, _debug2.default)('EasyServer');
         this.d_router = {};
         Object.assign(_default2.default, _config2.default);
     }
+    demo() {}
     async start() {
         this.e_Console('=======================================');
         this.e_Console('EasyServer version' + _package2.default.version);
