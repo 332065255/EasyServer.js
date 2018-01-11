@@ -6,7 +6,8 @@ module.exports={
     output:{
         path:path.resolve('./dist'),
         filename:'[name].js',
-        // libraryTarget: "commonjs2",
+        library: "EasyServer",
+        libraryTarget: "umd"
     },
     module:{
         loaders: [
