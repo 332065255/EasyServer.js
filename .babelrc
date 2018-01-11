@@ -6,4 +6,7 @@
       "transform-es2015-destructuring",
       "transform-es2015-parameters"
     ]
-  }
+    // "presets": [
+    //     "stage-0"
+    // ]
+}
