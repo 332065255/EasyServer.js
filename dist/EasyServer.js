@@ -24,6 +24,10 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var http = require('http');
@@ -88,34 +92,41 @@ class EasyServer {
     }
     async compileJs() {
         return new Promise((res, rej) => {
-            let filePath = _path2.default.resolve(_default2.default.rootPath + 'routers/');
-            console.log(filePath);
+            let filePath = _path2.default.resolve(_default2.default.rootPath + 'routes/');
+            // console.log(filePath);
             this.fileDisplay(filePath);
-            console.log(this.d_router);
+            // console.log(this.d_router);
         });
     }
     fileDisplay(filePath) {
+
         //根据文件路径读取文件，返回文件列表  
-        fs.readdir(filePath, function (err, files) {
+        _fs2.default.readdir(filePath, (err, files) => {
             if (err) {
                 this.d_Console(err);
             } else {
                 //遍历读取到的文件列表  
-                files.forEach(function (filename) {
+                files.forEach(filename => {
                     //获取当前文件的绝对路径  
                     var filedir = _path2.default.join(filePath, filename);
                     //根据文件路径获取文件信息，返回一个fs.Stats对象  
-                    fs.stat(filedir, function (eror, stats) {
+                    _fs2.default.stat(filedir, (eror, stats) => {
                         if (eror) {
                             this.d_Console('获取文件stats失败');
                         } else {
                             var isFile = stats.isFile(); //是文件  
                             var isDir = stats.isDirectory(); //是文件夹  
                             if (isFile) {
-                                this.d_router[filedir] = undefined;
+                                var _class = require(filedir).default;
+                                var rout = new _class();
+                                rout.compilePhyPath(filedir);
+                                // console.log(rout,rout.nickName,rout.path);
+                                this.d_router[rout.nickName] = rout;
+                                this.app.get(rout.path, rout.default.bind(rout));
+                                this.app.post(rout.path, rout.default.bind(rout));
                             }
                             if (isDir) {
-                                fileDisplay(filedir); //递归，如果是文件夹，就继续遍历该文件夹下面的文件  
+                                this.fileDisplay(filedir); //递归，如果是文件夹，就继续遍历该文件夹下面的文件  
                             }
                         }
                     });
