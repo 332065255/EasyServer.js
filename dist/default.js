@@ -5,5 +5,5 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     port: 9889,
-    rootPath: '/'
+    rootPath: __dirname+'/../../'
 };

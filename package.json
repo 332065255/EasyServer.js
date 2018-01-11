@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"./node_modules/.bin/babel lib --out-dir dist"
+    "build":"./node_modules/.bin/babel lib --out-dir dist",
+    
   },
+  "pre-commit":["build"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/332065255/EasyServer.js.git"
