@@ -133,14 +133,11 @@ class EasyServer {
     async compileJs() {
         return new Promise((res, rej) => {
             let filePath = _path2.default.resolve(_default2.default.rootPath + 'routes/');
-            // console.log(filePath);
             this.fileDisplay(filePath);
-            // console.log(this.d_router);
             res();
         });
     }
     cleanCache(modulePath) {
-        // require.cache[modulePath] = null;
         delete require.cache[modulePath];
     }
     fileDisplay(filePath) {
