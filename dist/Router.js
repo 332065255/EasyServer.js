@@ -12,8 +12,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class Router {
     constructor() {
-        this.debug = (0, _debug2.default)('router');
+        this.incomeDebug = (0, _debug2.default)('router income');
+        this.debug = (0, _debug2.default)('router run');
         this.err_Console = (0, _debug2.default)('Error');
+        this.incomeDebug.enabled = this.debug.enabled = this.err_Console.enabled = true;
         this.req = null;
         this.res = null;
     }
@@ -21,7 +23,7 @@ class Router {
         res.set('EasyServer', _package2.default.version);
         this.req = req;
         this.res = res;
-        this.debug(req.path);
+        this.incomeDebug(req.path);
         let actName = this.getPathToAction(req.path);
         if (!this.before()) {
             if (!this.res.headersSent) {
