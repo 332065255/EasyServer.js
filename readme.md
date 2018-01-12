@@ -12,8 +12,8 @@
 
 	
 ### routes（路由目录，必须,重要！！！！！请仔细阅读）
-* routes目录下应都为文件夹
-* routes目录下不能有.js文件
+* routes根目录下应都为文件夹
+* routes根目录下不能有.js文件
 * http://domain/ 请求的路由地址为 /routes/index/index.js 下的indexAction
 * http://domain/user/index/ 请求的路由地址为 /routes/user/index.js 下的indexAction
 
