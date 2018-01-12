@@ -7,7 +7,7 @@
 * 该目录是config模块自动加载，根据NODE_ENV进行主动加载对应的.js or .json文件
 * 不管NODE_ENV是什么，默认加载default.js or default.json
 * default.js 默认应有内容
-	* 	"rootPath": __dirname + '/../'   这是给框架提供项目根目录
+	* 	"rootPath": ''    这是给框架提供项目根目录 (默认已有，如不必须，不用写该参数)
 	*  "port":9889       项目启动端口号
 
 	
