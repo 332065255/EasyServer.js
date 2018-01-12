@@ -11,12 +11,19 @@
 	*  "port":9889       项目启动端口号
 
 	
-### routes（路由目录，必须）
+### routes（路由目录，必须,重要！！！！！请仔细阅读）
 * routes目录下应都为文件夹
-* http://domain/ 请求的路由地址为 /routes/index/index.js
-* http://domain/user/index/ 请求的路由地址为 /routes/user/index.js
-* http://domain/user/reg/ 请求的路由地址为 /routes/user/reg.js
-* .js文件必须都继承自Router
+* routes目录下不能有.js文件
+* http://domain/ 请求的路由地址为 /routes/index/index.js 下的indexAction
+* http://domain/user/index/ 请求的路由地址为 /routes/user/index.js 下的indexAction
+
+* http://domain/user 请求的路由地址为 /routes/user/index.js 下的indexAction
+
+* http://domain/user/index 请求的路由地址为 /routes/user/index.js 下的indexAction
+* http://domain/user/getname 请求的路由地址为 /routes/user/index.js 下的getnameAction
+* http://domain/user/reg/ 请求的路由地址为 /routes/user/reg.js 下的indexAction
+* http://domain/user/reg/logup 请求的路由地址为 /routes/user/reg.js 下的logupAction
+* routes目录下所有.js文件必须都继承自Router
 	
 ### views(静态文件目录，必须)
 * views目录下对应routes，1对1对应
@@ -34,6 +41,7 @@
 	* http://domain/user/index/getUser 请求的路由地址为 /routes/user/index.js 下的getUserAction()方法
 	* 该方法返回false，即立即结束后续操作
 	* 该方法应都为post请求
+	* xxx应全部为小写，因为浏览器地址栏不支持大写
 * __call() 方法，如果请求路由没有击中任何xxxAction()方法，那么默认执行该方法，返回false，即立即结束后续操作
 * after()方法，最后执行方法
 	

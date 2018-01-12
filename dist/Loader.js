@@ -28,6 +28,10 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
+var _chalk = require('chalk');
+
+var _chalk2 = _interopRequireDefault(_chalk);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class Loader {
@@ -36,10 +40,17 @@ class Loader {
         this.routerList = {};
         this.f_Console = (0, _debug2.default)('fileChange');
         this.r_Console = (0, _debug2.default)('router regeist');
+        this.r_Console2 = (0, _debug2.default)('router regeist ERROR');
         this.d_Console = (0, _debug2.default)('debug');
-        this.f_Console.enabled = this.r_Console.enabled = this.d_Console.enabled = true;
+        this.r_Console2.enabled = this.f_Console.enabled = this.r_Console.enabled = this.d_Console.enabled = true;
+        _default2.default.rootPath = _path2.default.join(process.cwd(), "/");
+        Object.assign(_default2.default, _config2.default);
+        if (_default2.default.rootPath.indexOf('.') === 0) {
+            _default2.default.rootPath = _path2.default.join(process.cwd(), _default2.default.rootPath);
+        }
+        //启动目录监听
         if (process.env.NODE_ENV === 'dev') {
-            _chokidar2.default.watch(_default2.default.rootPath + 'routes/').on('change', path => {
+            _chokidar2.default.watch(_path2.default.join(_default2.default.rootPath, 'routes/')).on('change', path => {
                 this.cleanCache(path);
                 this.f_Console(path, "reCompile");
                 var _class = require(path).default;
@@ -58,7 +69,7 @@ class Loader {
 
     async compileJs() {
         return new Promise((res, rej) => {
-            let filePath = _path2.default.resolve(_default2.default.rootPath + 'routes/');
+            let filePath = _path2.default.resolve(_path2.default.join(_default2.default.rootPath, 'routes/'));
             this.fileDisplay(filePath);
             res();
         });
@@ -85,12 +96,16 @@ class Loader {
                             var isFile = stats.isFile(); //是文件  
                             var isDir = stats.isDirectory(); //是文件夹  
                             if (isFile) {
-                                var _class = require(filedir).default;
-                                var rout = new _class();
-                                rout.compilePhyPath(filedir);
-                                // console.log(rout,rout.nickName,rout.path);
-                                this.r_Console(rout.path + ' is registered');
-                                this.routerList[rout.nickName] = rout;
+                                if (filePath.lastIndexOf('routes') + 6 != filePath.length) {
+                                    this.cleanCache(filedir);
+                                    var _class = require(filedir).default;
+                                    var rout = new _class();
+                                    rout.compilePhyPath(filedir);
+                                    this.r_Console(rout.fullpath + " and " + rout.path + " and " + rout.middlepath + ' is registered');
+                                    this.routerList[rout.nickName] = rout;
+                                } else {
+                                    this.r_Console2(_chalk2.default.red("Error: " + filedir + ' is not registered!!!! Because it is in the routes directory!!!'));
+                                }
                             }
                             if (isDir) {
                                 this.fileDisplay(filedir); //递归，如果是文件夹，就继续遍历该文件夹下面的文件  

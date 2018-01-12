@@ -8,6 +8,10 @@ var _package = require('./../package.json');
 
 var _package2 = _interopRequireDefault(_package);
 
+var _chalk = require('chalk');
+
+var _chalk2 = _interopRequireDefault(_chalk);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class Router {
@@ -48,7 +52,13 @@ class Router {
     }
     display() {}
     getPathToAction(path) {
-        let name = path.substr(path.lastIndexOf('/') + 1);
+        let name;
+        if (path.lastIndexOf('/') === path.indexOf('/')) {
+            name = "";
+        } else {
+            name = path.substr(path.lastIndexOf('/') + 1);
+        }
+
         return name == "" ? "indexAction" : name + "Action";
     }
     __call() {
@@ -69,6 +79,8 @@ class Router {
     }
     compilePhyPath(path) {
         var arr = path.split('/');
+        //默认路径模式
+
         var index = -1;
         for (var i = 0; i < arr.length; i++) {
             if (arr[i] == 'routes') {
@@ -76,8 +88,13 @@ class Router {
             }
         }
         this.allPath = path;
+        this.fullpath = "/" + arr.slice(index).join('/');
+        this.fullpath = this.fullpath.replace('.js', '/');
+        if (arr[arr.length - 1] === 'index.js') {
+            arr.pop();
+        }
         this.path = "/" + arr.slice(index).join('/');
-        this.path = this.path.replace('.js', '/*');
+        this.middlepath = "/" + arr.slice(index).join('/') + "/";
         this.nickName = arr.slice(index).join('_');
     }
 }

@@ -34,8 +34,6 @@ class EasyServer {
         this.d_Console = (0, _debug2.default)('debug');
         this.e_Console = (0, _debug2.default)('EasyServer');
         this.d_router = {};
-
-        Object.assign(_default2.default, _config2.default);
     }
     async start() {
         this.e_Console('=======================================');
