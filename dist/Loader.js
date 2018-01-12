@@ -101,7 +101,7 @@ class Loader {
                                     var _class = require(filedir).default;
                                     var rout = new _class();
                                     rout.compilePhyPath(filedir);
-                                    this.r_Console(rout.fullpath + " and " + rout.path + " and " + rout.middlepath + ' is registered');
+                                    this.r_Console("file: ", filedir + " ", rout.fullpath + " and " + rout.path + " and " + rout.middlepath + ' is registered');
                                     this.routerList[rout.nickName] = rout;
                                 } else {
                                     this.r_Console2(_chalk2.default.red("Error: " + filedir + ' is not registered!!!! Because it is in the routes directory!!!'));

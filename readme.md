@@ -1,4 +1,5 @@
 # 简单的服务器
+![EasyServer.js logo](http://gao111.top/img/logo.jpg)
 ## 继承自express的简单服务器，不需要为路由而烦恼
 ### [测试项目](https://github.com/332065255/easy_test)
 
