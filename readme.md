@@ -26,12 +26,18 @@
 * http://domain/user/reg/logup 请求的路由地址为 /routes/user/reg.js 下的logupAction
 * routes目录下所有.js文件必须都继承自Router
 	
-### views(静态文件目录，必须)
-* views目录下对应routes，1对1对应
-* routes目录下.js文件 对应views同目录下.html文件
-
-
-
+### views(渲染文件目录，必须)
+* views目录下有且仅有html文件
+* routes目录下.js文件display方法，默认无参数时，访问的是/views/1级路由.html
+	* 举例 http://domain/user/index,如果indexAction中执行了display()方法，那么渲染的就是/views/user.html
+	* 举例 http://domain/user/index,如果indexAction中执行了display("index.html")方法，那么渲染的就是/views/index.html
+	* 举例 http://domain/user/index,如果indexAction中执行了display("/lib/index.html")方法，那么渲染的就是/views/lib/index.html
+### static（静态资源目录）
+* 该目录下可以存放任何东西，可以通过http://domain/static/xxx.xxx直接访问到
+* views目录下的html文件，里面如果使用静态文件，比如图片，比如js等，看下面示例
+	* 图片：<img src='/static/1.jpg'/>
+	* JS文件：<script src='/static/1.js'>
+	* 注意，静态文件的起始目录永远为'/static'
 ## API
 ### EasyServer
 * start()方法 启动服务器，默认端口是9889
