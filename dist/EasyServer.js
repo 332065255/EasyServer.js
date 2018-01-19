@@ -24,6 +24,10 @@ var _InCome = require('./InCome');
 
 var _InCome2 = _interopRequireDefault(_InCome);
 
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var http = require('http');
@@ -34,6 +38,15 @@ class EasyServer {
         this.d_Console = (0, _debug2.default)('debug');
         this.e_Console = (0, _debug2.default)('EasyServer');
         this.d_router = {};
+
+        _default2.default.rootPath = _path2.default.join(process.cwd(), "/");
+        Object.assign(_default2.default, _config2.default);
+        if (_default2.default.rootPath.indexOf('.') === 0) {
+            _default2.default.rootPath = _path2.default.join(process.cwd(), _default2.default.rootPath);
+        }
+        global.e_rootPath = _default2.default.rootPath;
+        //静态资源目录
+        this.app.use('/static', _express2.default.static(global.e_rootPath + 'static/'));
     }
     async start() {
         this.e_Console('=======================================');

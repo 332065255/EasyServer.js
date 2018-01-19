@@ -12,6 +12,14 @@ var _chalk = require('chalk');
 
 var _chalk2 = _interopRequireDefault(_chalk);
 
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class Router {
@@ -50,7 +58,33 @@ class Router {
         }
         this.after();
     }
-    display() {}
+    display(path) {
+        if (path) {
+            try {
+                let file = _fs2.default.readFileSync(_path2.default.join(global.e_rootPath, "/views/", path));
+                if (file === null) {
+                    this.res.send("<h1>404</h1><h1>/views/" + path + " is not found</h1>");
+                } else {
+                    this.res.setHeader('content-type', 'text/html;charset=utf-8');
+                    this.res.send(file);
+                }
+            } catch (e) {
+                this.res.send("<h1>404</h1><h1>/views/" + path + " is not found</h1>");
+            }
+        } else {
+            try {
+                let file = _fs2.default.readFileSync(_path2.default.join(global.e_rootPath, "/views/", this.viewName));
+                if (file === null) {
+                    this.res.send("<h1>404</h1><h1>/views/" + this.viewName + " is not found</h1>");
+                } else {
+                    this.res.setHeader('content-type', 'text/html;charset=utf-8');
+                    this.res.send(file);
+                }
+            } catch (e) {
+                this.res.send("<h1>404</h1><h1>/views/" + this.viewName + " is not found</h1>");
+            }
+        }
+    }
     getPathToAction(path) {
         let name;
         if (path.lastIndexOf('/') === path.indexOf('/')) {
@@ -63,11 +97,10 @@ class Router {
     }
     __call() {
         this.debug('__call');
-        if (!this.res.headersSent) this.res.send('nothing');
+        if (!this.res.headersSent) this.display();
         return true;
     }
     before() {
-        this.debug('before');
         return true;
     }
     after() {
@@ -93,6 +126,7 @@ class Router {
         if (arr[arr.length - 1] === 'index.js') {
             arr.pop();
         }
+        this.viewName = arr.slice(index)[0] + '.html';
         this.path = "/" + arr.slice(index).join('/');
         this.middlepath = "/" + arr.slice(index).join('/') + "/";
         this.nickName = arr.slice(index).join('_');

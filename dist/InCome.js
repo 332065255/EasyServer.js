@@ -8,6 +8,14 @@ var _Loader = require('./Loader');
 
 var _Loader2 = _interopRequireDefault(_Loader);
 
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -35,7 +43,18 @@ class InCome {
             }
         }
         if (!this.shoot) {
-            res.send("<h1>404</h1>");
+            if (path.indexOf('/static') === 0) {
+                res.status(404);
+                // res.end();
+            }
+            _fs2.default.readFile(_path2.default.join(global.e_rootPath, "/views/404.html"), 'utf-8', function (err, data) {
+                //读取内容
+                if (err) {
+                    res.send("<h1>404</h1>");
+                } else {
+                    res.send(data);
+                }
+            });
         }
     }
 }
