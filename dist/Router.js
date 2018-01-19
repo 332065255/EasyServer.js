@@ -48,7 +48,7 @@ class Router {
                 return;
             }
         } catch (e) {
-            this.err_Console(e.toString());
+            this.err_Console(actName, e.toString());
             if (!this.__call()) {
                 if (!this.res.headersSent) {
                     this.res.send('');
@@ -86,13 +86,12 @@ class Router {
         }
     }
     getPathToAction(path) {
-        let name;
+        let name = "";
         if (path.lastIndexOf('/') === path.indexOf('/')) {
             name = "";
         } else {
             name = path.substr(path.lastIndexOf('/') + 1);
         }
-
         return name == "" ? "indexAction" : name + "Action";
     }
     __call() {
@@ -128,7 +127,10 @@ class Router {
         }
         this.viewName = arr.slice(index)[0] + '.html';
         this.path = "/" + arr.slice(index).join('/');
+        this.path = this.path.replace('.js', '');
+
         this.middlepath = "/" + arr.slice(index).join('/') + "/";
+        this.middlepath = this.middlepath.replace('.js', '');
         this.nickName = arr.slice(index).join('_');
     }
 }
