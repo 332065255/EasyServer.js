@@ -124,13 +124,16 @@ class Router {
         this.fullpath = this.fullpath.replace('.js', '/');
         if (arr[arr.length - 1] === 'index.js') {
             arr.pop();
+            this.path = "/" + arr.slice(index).join('/');
+            this.path = this.path.replace('.js', '');
+
+            this.middlepath = "/" + arr.slice(index).join('/') + "/";
+            this.middlepath = this.middlepath.replace('.js', '');
+        } else {
+            this.path = this.middlepath = this.fullpath;
         }
         this.viewName = arr.slice(index)[0] + '.html';
-        this.path = "/" + arr.slice(index).join('/');
-        this.path = this.path.replace('.js', '');
 
-        this.middlepath = "/" + arr.slice(index).join('/') + "/";
-        this.middlepath = this.middlepath.replace('.js', '');
         this.nickName = arr.slice(index).join('_');
     }
 }
